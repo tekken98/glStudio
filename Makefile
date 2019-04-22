@@ -32,4 +32,5 @@ tags:
 	ctags --extra=+q --fields=+aiS --c++-kinds=cfp .my.cpp
 	ctags --extra=+q --fields=+aiS --c++-kinds=cfp -a *.cpp *.h
 clean:
-	rm *.o
+	-rm *.o
+	-rm a

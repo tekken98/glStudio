@@ -1,0 +1,3 @@
+#!/bin/bash
+src=/home/bao/prg/c++/src/explicit
+cp -av $src/{*.cpp,*.c,*.h,Makefile,triangles.*} ./

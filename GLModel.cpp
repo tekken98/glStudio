@@ -1,7 +1,30 @@
+//TRAITS
+// void GLModel::moveTo(GLfloat x , GLfloat y, GLfloat z)
+// GLuint GLModel::getSize()
+// void GLModel::loadModel()
+// void GLModel::drawModel() 
+// void GLModel::bind()
+// GLfloat * GLModel::getVertex()
+// void GLModel::pushVertex(Lib3dsVector& v,Lib3dsVector& nv,int i)
+// void GLModel::loadNode(Lib3dsNode *node)
+// void GLModel::load(const char * filename)
+// GLModel::~GLModel()
+// GLModel& GLModel::operator=(const GLModel& s)
+// GLModel::GLModel(const GLModel& s)
+// GLModel::GLModel(const char* filename)
 #include "GLModel.h"
 #include <iostream>
 using namespace std;
 //GLMODEL BEGIN
+void GLModel::offsetTo(GLfloat x , GLfloat y, GLfloat z)
+{
+    glPushMatrix();
+    glTranslatef(x,y,z);
+    d_pos[0] += x;
+    d_pos[1] += y;
+    d_pos[2] += z;
+    glPopMatrix();
+}
 GLuint GLModel::getSize()
 {
     return d_size;
@@ -25,10 +48,14 @@ void GLModel::loadModel()
     glBufferData(GL_ARRAY_BUFFER,sizeof(Vertex) * d_size,pv,GL_STATIC_DRAW);
 }
 void GLModel::drawModel()
-{
+{   
+    glPushMatrix();
+    glTranslatef(d_pos[0],d_pos[1],d_pos[2]);
+
     glBindVertexArray(d_VAO);
     for (unsigned int i = 0; i < d_size;i++)
         glDrawArrays(GL_TRIANGLE_FAN,i*3,3);
+    glPopMatrix();
 }
 void GLModel::bind()
 {
@@ -59,7 +86,7 @@ GLfloat * GLModel::getVertex()
     }
     return (GLfloat*)d_p;
 }
-void GLModel::pushVertex(Lib3dsVector& v,Lib3dsVector&nv,int i)
+void GLModel::pushVertex(Lib3dsVector& v,Lib3dsVector& nv,int i)
 {
     Vertex vertex;
     vertex.x = v[0] / 2 ;

@@ -1,3 +1,21 @@
+//TRAITS
+// void on_special(int key,int cx, int cy)
+// int main(int argc , char** argv)
+// void do_draw()
+// void init2()
+// void loadTexture()
+// void msgln(T m)
+// void on_display()
+// void on_mouse(int button,int action,int x, int y)
+// void on_time(int timer_id)
+// void pushVertex(GLfloat x,GLfloat y, GLfloat z, GLfloat r,GLfloat s)
+// void pushVertex(texturePos& p)
+// void reload()
+//GLfloat * getVertex(int & size)
+//no use
+//void managerWidget()
+//
+//void on_btn(Object* o)
 #define GL_GLEXT_PROTOTYPES
 #include <string>
 #include <string.h>
@@ -5,6 +23,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 #include "button.h"
@@ -94,34 +113,33 @@ void managerWidget(){
 void on_btn(Object* o){
     cout << "good" << o << endl;
 }
-void on_special(int event,int x, int y)
+void on_special(int key,int cx, int cy)
 {
-    on_display();
+    GLfloat step = 0.05f;
+    GLfloat x=0;
+    GLfloat y=0;
+    switch (key){
+        case GLUT_KEY_UP: y += step;break;
+        case GLUT_KEY_DOWN: y -= step;break;
+        case GLUT_KEY_LEFT: x -= step;break;
+        case GLUT_KEY_RIGHT:  x+= step;break;
+    }
+    y = y < -1.0f ? -1 + 2 * step : y;
+    y = y > 1.0f ? 1 - 2 * step : y;
+    x = x > 1.0f ? 1 - 2 * step : x;
+    x = x < -1.0f ? -1 + 2 * step : x;
+    gModelBall.offsetTo(x,y,0);
+    do_draw();
 }
-void on_mouse(int button,int action,int x, int y)
+void on_mouse(int button,int action,int cx, int cy)
 {
-    glUniform1i(gFlagLoc,gFlag);
-    gFlag = 1 - gFlag ;
-    if (action == GLUT_UP)
-    {
-        for(auto a : g_redrawObj)
-            a->clearPressed();
-        g_redrawObj.clear();
-        glutPostRedisplay();
-        return;
+GLfloat step = 0.01f;
+    GLfloat z=0;
+    switch (action){
+        case GLUT_UP: z += step;break;
     }
-    for(auto a : g_Obj)
-    {
-        if (a->ptIn(x,y))
-        {
-            a->setPressed();
-            g_redrawObj.push_back(a);
-            FUN f = g_Func[a];
-            (*f)(a);
-            break;
-        }
-    }
-    glutPostRedisplay();
+    gModelBall.offsetTo(cx/800,cy/600,z);
+    do_draw();
 }
 
 const char * textureFile[][2] = {
@@ -139,7 +157,6 @@ void reload()
 void on_time(int timer_id)
 {
     do_draw();
-    reload();
     glutTimerFunc(1000/10,on_time,0);
 }
 void init2()
@@ -226,7 +243,8 @@ void init2()
 
 
     // Ready. Draw.
-    gluPerspective(45,1,.1,1000);
+    glViewport(0,0,800,600);
+    gluPerspective(45,0.5,.1,1000);
     gluLookAt(0,0,0,0,0,1000, 0,1,0);
 }
 
@@ -250,7 +268,7 @@ void do_draw()
    // glLoadIdentity().; 
 
     gProgram.setUniform("v4vColor",0xaaaaaaaa);
-    gProgram.setUniform("v4Color",0x88888888);
+    //gProgram.setUniform("v4Color",0x88888888);
     gTexture.setTexture("draw");
     for (int i = 0;i < 12;i++)
     {
@@ -287,7 +305,7 @@ void do_draw()
     glTranslatef(0,-.2,5);
     gModelBall.drawModel();
     glPopMatrix();
-
+    string a;
     {
     glPushMatrix();
     glTranslatef(-.5,.5,3);
@@ -297,6 +315,7 @@ void do_draw()
     gModelBall.drawModel();
     glPopMatrix();
     }
+    reload();
 }
 void on_display()
 {
@@ -304,23 +323,21 @@ void on_display()
 }
 int main(int argc , char** argv)
 {
-    for (int i = 0;i < 1;i++)
-    {
-        Button * btn = new Button();
-        g_Obj.push_back(btn);
-        g_Func.insert(pair<Object*,FUN>(btn,on_btn));
-    }
-    managerWidget();
     glutInit(&argc,argv);
     glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
     glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
     glutInitWindowSize(800, 600);
     glutCreateWindow("good");
-    init2();
     glutDisplayFunc(on_display);
     glutMouseFunc(on_mouse);
     glutSpecialFunc(on_special);
     glutTimerFunc(50,on_time,0);
+    GLenum err = glewInit();
+    if (GLEW_OK != err){
+        printf("GLEW Error:%s\n",glewGetErrorString(err));
+        return 1;
+    }
+    init2();
     glutMainLoop();
     return 0;
 }

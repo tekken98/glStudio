@@ -24,6 +24,7 @@ class GLModel
         GLuint d_VAO;
         GLuint d_size;
         std::vector<GLuint> d_texture;
+        GLfloat d_pos[3];
     public:
         //constructor
         GLModel(const char* filename);
@@ -38,6 +39,7 @@ class GLModel
         void bind();
         void loadModel();
         void drawModel();
+        void offsetTo(GLfloat x , GLfloat y, GLfloat z);
         //accessor
         //
         GLfloat * getVertex();

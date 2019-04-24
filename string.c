@@ -1,5 +1,32 @@
+//TRAITS
+// static inline int fz_tolower(int c)
+// size_t fz_strnlen(const char *s, size_t n)
+// int fz_strncasecmp(const char *a, const char *b, int n)
+// int fz_strcasecmp(const char *a, const char *b)
+// char * fz_strsep(char **stringp, const char *delim)
+// size_t fz_strlcpy(char *dst, const char *src, size_t siz)
+// size_t fz_strlcat(char *dst, const char *src, size_t siz)
+// void fz_dirname(char *dir, const char *path, size_t n)
+// static inline int ishex(int a)
+// static inline int tohex(int c)
+// char * fz_urldecode(char *url)
+// void fz_format_output_path(fz_context *ctx, char *path, size_t size, const char *fmt, int page)
+// char * fz_cleanname(char *name)
+// int fz_chartorune(int *rune, const char *str)
+// int fz_runetochar(char *str, int rune)
+// int fz_runelen(int c)
+// int fz_utflen(const char *s)
+// float fz_atof(const char *s)
+// int fz_atoi(const char *s)
+// int64_t fz_atoi64(const char *s)
+// int fz_is_page_range(fz_context *ctx, const char *s)
+// const char *fz_parse_page_range(fz_context *ctx, const char *s, int *a, int *b, int n)
+// static char *twobyte_memmem(const unsigned char *h, size_t k, const unsigned char *n)
+// static char *threebyte_memmem(const unsigned char *h, size_t k, const unsigned char *n)
+// static char *fourbyte_memmem(const unsigned char *h, size_t k, const unsigned char *n)
+// static char *twoway_memmem(const unsigned char *h, const unsigned char *z, const unsigned char *n, size_t l)
+// void *fz_memmem(const void *h0, size_t k, const void *n0, size_t l)
 #include <mupdf/fitz.h>
-
 #include <string.h>
 #include <errno.h>
 #include <math.h>

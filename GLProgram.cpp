@@ -1,3 +1,17 @@
+//TRAITS
+// GLProgram& GLProgram::operator=(const GLProgram& s)
+// GLProgram::GLProgram()
+// GLProgram::GLProgram(const GLProgram& s)
+// GLProgram::~GLProgram()
+// GLint GLProgram::getUniformLocation(const char * name)
+// GLuint GLProgram::getProgram()
+// GLuint GLProgram::loadShader(GLuint type,const char * filename)
+// bool GLProgram::checkLink() 
+// bool GLProgram::checkShader(GLuint shader)
+// char ** GLProgram::loadProgramFile(const char * filename,int & lines)
+// void GLProgram::bindUniform(const char *name)
+// void GLProgram::loadProgram(ShaderInfo* info)
+// void GLProgram::setUniform(const char *name ,GLuint value)
 #include <fstream>
 #include <vector>
 #include <string>
@@ -22,7 +36,8 @@ GLuint GLProgram::getProgram()
 {
     return d_program;
 }
-void GLProgram::loadProgram(ShaderInfo* info)
+void GLProgram::loadProgram(
+        ShaderInfo* info)
 {
     d_program = glCreateProgram();
     vector<GLuint> shader;

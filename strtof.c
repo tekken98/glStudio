@@ -1,3 +1,13 @@
+//TRAITS
+// float fz_strtof(const char *string, char **tailptr)
+// static float diy_to_float(strtof_fp_t x, int negative)
+// static float scale_integer_to_float(uint32_t M, int N, int negative)
+// static int starts_with(const char **s, const char *string)
+// static strtof_fp_t divide(strtof_fp_t x, strtof_fp_t y)
+// static strtof_fp_t strtof_cached_power(int i)
+// static strtof_fp_t strtof_multiply(strtof_fp_t x, strtof_fp_t y)
+// static strtof_fp_t uint32_to_diy(uint32_t x)
+// static unsigned leading_zeros(uint32_t x)
 #include "mupdf/fitz.h"
 
 #include <assert.h>

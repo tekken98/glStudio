@@ -1,6 +1,6 @@
 INCLUDE=-I/usr/include -I/usr/local/include/ -I/usr/local/include/freetype2/ -I/opt/libjpeg-turbo/include/
 LIB=-L/usr/local/lib/ -L/opt/libjpeg-turbo/lib64/
-LIBGLUT=-lglut -lGL -lGLU -lfreetype -lturbojpeg -l3ds 
+LIBGLUT=-lglut -lGLEW -lGLU -lGL -lfreetype -lturbojpeg -l3ds
 objs=a.o button.o font.o object.o common.o loadfile.o GLProgram.o GLModel.o GLTexture.o
 CFLAGS=-Wall 
 OPTS= -lm -lstdc++ -fpch-preprocess

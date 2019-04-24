@@ -41,14 +41,17 @@ class GLProgram
             return d_program;
         }
 };
+//GLPROGRAM BEGIN
 template <typename T> void GLProgram::setUniform(const char *name ,T& value)
 {
     if (is_same<T,vec3>::value) {
-        glUniform3fv(d_location[name],1,value);
+        GLuint loc = d_location[name];
+        glUniform3fv(loc,1,value);
         //cout << "vec3 " <<endl;
     }
     else if (SAME(T,vec4)){
-        glUniform4fv(d_location[name],1,value);
+        GLuint loc = d_location[name];
+        glUniform4fv(loc,1,value);
         //cout << "vec4 " << endl;
     }
     else if (SAME(T,float)){
@@ -59,4 +62,5 @@ template <typename T> void GLProgram::setUniform(const char *name ,T& value)
         cout << "GLuint" << endl;
     }
 }
+//GLPROGRAM END
 #endif

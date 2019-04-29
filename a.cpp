@@ -1,4 +1,5 @@
 //TRAITS
+// void on_mouse(int button,int action,int cx, int cy)
 // void on_special(int key,int cx, int cy)
 // int main(int argc , char** argv)
 // void do_draw()
@@ -89,9 +90,9 @@ void pushVertex(GLfloat x,GLfloat y, GLfloat z,
     p.z = z;
     p.r = r;
     p.s = s;
-    p.nx = x;
-    p.ny = y;
-    p.nz = 1;
+    p.nx = 0;
+    p.ny = 0;
+    p.nz = 0;
     pushVertex(p);
 }
 void managerWidget(){
@@ -121,14 +122,16 @@ void on_special(int key,int cx, int cy)
     switch (key){
         case GLUT_KEY_UP: y += step;break;
         case GLUT_KEY_DOWN: y -= step;break;
-        case GLUT_KEY_LEFT: x -= step;break;
-        case GLUT_KEY_RIGHT:  x+= step;break;
+        case GLUT_KEY_LEFT: x += step;break;
+        case GLUT_KEY_RIGHT:  x-= step;break;
     }
     y = y < -1.0f ? -1 + 2 * step : y;
     y = y > 1.0f ? 1 - 2 * step : y;
     x = x > 1.0f ? 1 - 2 * step : x;
     x = x < -1.0f ? -1 + 2 * step : x;
-    gModelBall.offsetTo(x,y,0);
+    //glTranslatef(x,0,y * -5);
+    glRotatef(3.1415926 / 3, 0,y,0);
+    gModelBall.offsetTo(0,0,x * -5);
     do_draw();
 }
 void on_mouse(int button,int action,int cx, int cy)
@@ -168,11 +171,13 @@ void init2()
         {GL_FRAGMENT_SHADER,"triangles.frag"},
         {GL_NONE,NULL}};
     gProgram.loadProgram(shader);
-    gProgram.bindUniform("v4Color");
-    gProgram.bindUniform("v4vColor");
     gProgram.bindUniform("v3Dir");
-    vec3 l = {0,-1,0};
+    gProgram.bindUniform("diffuseColor");
+    gProgram.bindUniform("ambientColor");
+    vec3 l = {0,-.5,10};
     gProgram.setUniform("v3Dir",l);
+    gProgram.setUniform("diffuseColor",(0xffffffff));
+    gProgram.setUniform("ambientColor",0x222288ff);
    //left 
     for (int i = 0; i< 60.0f;i+= 10.0f)
     {
@@ -244,8 +249,8 @@ void init2()
 
     // Ready. Draw.
     glViewport(0,0,800,600);
-    gluPerspective(45,0.5,.1,1000);
-    gluLookAt(0,0,0,0,0,1000, 0,1,0);
+    gluPerspective(35,1,.1,1000);
+    gluLookAt(-0.2,0,0,0,0,1000, 0,1,0);
 }
 
 void loadTexture()
@@ -267,8 +272,6 @@ void do_draw()
     glEnable(GL_POLYGON_SMOOTH);
    // glLoadIdentity().; 
 
-    gProgram.setUniform("v4vColor",0xaaaaaaaa);
-    //gProgram.setUniform("v4Color",0x88888888);
     gTexture.setTexture("draw");
     for (int i = 0;i < 12;i++)
     {
@@ -280,7 +283,7 @@ void do_draw()
         glDrawArrays(GL_TRIANGLE_FAN,i*4,4);
     }
     
-   gTexture.setTexture("fish");
+    gTexture.setTexture("fish");
     glDrawArrays(GL_TRIANGLE_FAN,24*4,4);
     static float z = 1;
     static float i = 1;

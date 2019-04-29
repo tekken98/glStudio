@@ -4,8 +4,25 @@
 #include <iostream>
 #include <GL/gl.h>
 #include <GL/glu.h>
-typedef GLfloat vec4[4];
-typedef GLfloat vec3[3];
+typedef struct _vec4 {
+    union{
+        GLfloat v[4];
+        GLfloat x,y,z,w;
+    };
+    operator GLfloat* (){
+        return &v[0];
+    }
+} vec4;
+ typedef struct _vec3 {
+    union{
+        GLfloat v[3];
+        GLfloat x,y,z;
+    };
+    operator GLfloat* (){
+        return &v[0];
+    }
+} vec3;
+              
 #define RGB(r,g,b) ((r<<24) & (b << 16) & (b << 8)) 
 #define SAME(a,b) (is_same<a,b>::value)
 using namespace std;
@@ -14,7 +31,7 @@ void msg (T m)
 {
     std::cout << m; 
 }
-void _init(vec4 v,GLuint u);
+void _init(vec4& v,GLuint u);
 enum
 {
     UI_COLOR_PANEL = 0xc0c0c0,

@@ -44,7 +44,9 @@ void GLProgram::loadProgram(
     while(info->d_type !=GL_NONE)
     {
         GLuint sh = loadShader(info->d_type,info->filename);
+        cout << "loading " << info->filename ;
         checkShader(sh);
+        cout << " finished." << endl;
         shader.push_back(sh);
         glAttachShader(d_program,sh);
         info++;

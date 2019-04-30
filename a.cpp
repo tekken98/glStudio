@@ -51,7 +51,6 @@ vector<Object*> g_Obj;
 vector<Object*> g_redrawObj;
 map<Object*,FUN> g_Func;
 GLProgram gProgram;
-GLModel gModel("1.3ds");
 GLModel gModelBall("2.3ds");
 GLTexture gTexture;
 
@@ -174,10 +173,10 @@ void init2()
     gProgram.bindUniform("v3Dir");
     gProgram.bindUniform("diffuseColor");
     gProgram.bindUniform("ambientColor");
-    vec3 l = {0,-.5,10};
+    vec3 l = {0,0,.5};
     gProgram.setUniform("v3Dir",l);
-    gProgram.setUniform("diffuseColor",(0xffffffff));
-    gProgram.setUniform("ambientColor",0x222288ff);
+    //gProgram.setUniform("diffuseColor",(0x11111111));
+    //gProgram.setUniform("ambientColor",0x22222222);
    //left 
     for (int i = 0; i< 60.0f;i+= 10.0f)
     {
@@ -225,7 +224,6 @@ void init2()
     glBindBuffer(GL_ARRAY_BUFFER, BUFs[0]);
     glBufferData(GL_ARRAY_BUFFER,sizeof(GLfloat) * 8 * size, quad_data,GL_STATIC_DRAW);
 
-
     delete [] quad_data;
     //glBindVertexArray(VAOs[0]);
     // Setup vertex attributes
@@ -240,16 +238,13 @@ void init2()
     glEnableVertexAttribArray(2);
 
 
-    gModel.loadModel();
-    gModel.bind();
-
     gModelBall.loadModel();
     gModelBall.bind();
 
 
     // Ready. Draw.
     glViewport(0,0,800,600);
-    gluPerspective(35,1,.1,1000);
+    gluPerspective(45,1,.1,1000);
     gluLookAt(-0.2,0,0,0,0,1000, 0,1,0);
 }
 
@@ -272,6 +267,7 @@ void do_draw()
     glEnable(GL_POLYGON_SMOOTH);
    // glLoadIdentity().; 
 
+    gProgram.setUniform("diffuseColor",0x000000ff);
     gTexture.setTexture("draw");
     for (int i = 0;i < 12;i++)
     {
@@ -294,17 +290,8 @@ void do_draw()
     z += i;
 
     glPushMatrix();
-    gProgram.setUniform("v4Color",0x0000ffff);
-    //gTexture.setTexture("fish");
-    glTranslatef(.2,.5,15);
-    //glTranslatef(1-z /30,.1,60-z);
-    gModelBall.drawModel();
-    glPopMatrix();
-
-    glPushMatrix();
-    gProgram.setUniform("v4Color",0x00ff00ff);
-    gTexture.setTexture("fish");
-    //glTranslatef(0,.4,z*2- 60);
+    gProgram.setUniform("diffuseColor",0x00ff00ff);
+    gTexture.setTexture("draw");
     glTranslatef(0,-.2,5);
     gModelBall.drawModel();
     glPopMatrix();
@@ -312,12 +299,12 @@ void do_draw()
     {
     glPushMatrix();
     glTranslatef(-.5,.5,3);
-    //glTranslatef(0,0,z);
-    gProgram.setUniform("v4Color",0xff0000ff);
+    gProgram.setUniform("diffuseColor",0xff0000ff);
     gTexture.setTexture("draw");
     gModelBall.drawModel();
-    glPopMatrix();
+    gModelBall.drawNormal();
     }
+    glPopMatrix();
     reload();
 }
 void on_display()

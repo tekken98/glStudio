@@ -6,7 +6,7 @@ CFLAGS=-Wall
 OPTS= -lm -lstdc++ -fpch-preprocess
 a:$(objs) 
 	cc $(objs) -o a  $(CFLAGS) $(INCLUDE) $(LIB) $(LIBGLUT)   $(OPTS)
-	./a
+	-./a
 a.o:a.cpp 
 	clear
 	gcc -c a.cpp $(CFLAGS)  $(INCLUDE) $(OPTS)

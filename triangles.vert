@@ -15,7 +15,8 @@ out vec3 v3LightDir;
 out vec2 v2Tex_coord;
 void main()
 {
-    v3FragNormal = v3Normal;
+    
+    v3FragNormal = mat3(gl_ModelViewMatrix) * v3Normal;
     vec4 v4T = vec4(v3Position,1.0);
     vec4 v4ModelView= gl_ModelViewMatrix * v4T ;
     vec3 v3 = v3BDir + v3Dir;

@@ -11,18 +11,24 @@
 #include <stdlib.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+const int  VERTEX_SIZE = 11; 
 struct Vertex {
-    GLfloat x,y,z,s,t;
+    GLfloat x,y,z;
+    GLfloat s,t;
     GLfloat nx,ny,nz;
 };
 class GLModel
 {
     private:
         Lib3dsFile * d_file=NULL;
-        std::vector<Vertex> d_vertex;
+
+        std::vector<Vertex> d_vertex[2];
         Vertex * d_p=NULL;
-        GLuint d_VAO;
-        GLuint d_size;
+
+        GLuint d_VAO[2];
+        GLuint d_size[2];
+        GLuint d_buf[2];
+
         std::vector<GLuint> d_texture;
         GLfloat d_pos[3];
     public:
@@ -40,10 +46,11 @@ class GLModel
         void loadModel();
         void drawModel();
         void offsetTo(GLfloat x , GLfloat y, GLfloat z);
+        void drawNormal();
         //accessor
         //
-        GLfloat * getVertex();
-        GLuint getSize();
+        GLfloat * getVertex(int index);
+        GLuint getSize(int index);
 };
 #endif
 
